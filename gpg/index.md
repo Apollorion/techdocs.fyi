@@ -1,3 +1,6 @@
+---
+has_children: true
+---
 # GPG
 
 ## Installation
