@@ -1,3 +1,7 @@
+---
+parent: gpg
+nav_order: 2
+---
 # Public Keys
 
 ## Downloading a Public Key
