@@ -1,3 +1,7 @@
+---
+parent: gpg
+nav_order: 1
+---
 # Encrypting and Decrypting
 
 ## Encrypting
