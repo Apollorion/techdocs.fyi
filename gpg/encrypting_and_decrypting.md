@@ -19,5 +19,5 @@ gpg --output $FILENAME --decrypt ${FILENAME}.gpg
 
 ## Decrypting text
 ```bash
-
+gpg --decrypt --armor encrypted.txt
 ```
