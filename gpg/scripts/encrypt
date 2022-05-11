@@ -4,7 +4,7 @@ set -e
 
 POSITIONAL_ARGS=()
 
-KEYSERVER="pgp.mit.edu"
+KEYSERVER="keyserver.ubuntu.com"
 
 while [[ $# -gt 0 ]]; do
   case $1 in

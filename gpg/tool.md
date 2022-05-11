@@ -46,7 +46,7 @@ curl -fsSL https://techdocs.fyi/gpg/scripts/decrypt | /bin/bash -s -- --key $KEY
 
 ## Testing
 
-You can test this tool using my public key, if you with (the key will automatically download from pgp.mit.edu).
+You can test this tool using my public key, if you with (the key will automatically download from keyserver.ubuntu.com).
 ```bash
 curl -fsSL https://techdocs.fyi/gpg/scripts/encrypt | /bin/bash -s -- --key 2DA5A422FB5206CC9DEFC036480EA7B1693D16B8 --text "hello world"
 ```
