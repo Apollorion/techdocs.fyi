@@ -1,0 +1,92 @@
+#!/bin/bash
+
+set -e
+
+POSITIONAL_ARGS=()
+
+KEYSERVER="pgp.mit.edu"
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -k|--key)
+      KEY="$2"
+      shift
+      shift
+      ;;
+    -f|--file)
+      FILE="$2"
+      shift
+      shift
+      ;;
+    -t|--text)
+      TEXT="$2"
+      shift
+      shift
+      ;;
+    -s|--keyserver)
+      KEYSERVER="$2"
+      shift
+      shift
+      ;;
+    -*|--*)
+      echo "Unknown option $1"
+      exit 1
+      ;;
+    *)
+      POSITIONAL_ARGS+=("$1")
+      shift
+      ;;
+  esac
+done
+
+if [ -z "$KEY" ]; then
+  echo "Key is required"
+  exit 1
+fi
+
+if [ -z "$FILE" ] && [ -z "$TEXT" ]; then
+  echo "--file or --text is required"
+  exit 1
+fi
+
+if [ -n "$FILE" ] && [ -n "$TEXT" ]; then
+  echo "only one of --file or --text can be supplied"
+  exit 1
+fi
+
+check_for_gpg() {
+  if ! command -v gpg >/dev/null 2>&1; then
+    echo "gpg is not installed"
+    echo "Please see: https://techdocs.fyi/gpg/"
+    exit 1
+  fi
+}
+
+check_for_gpg_key() {
+  if ! gpg --list-keys "$KEY" >/dev/null 2>&1; then
+    echo "Key $KEY is not installed"
+    echo "Attempting to download key from $KEYSERVER"
+    gpg --keyserver "$KEYSERVER" --recv-keys "$KEY"
+  fi
+}
+
+process_file() {
+  if [ -n "$FILE" ]; then
+    gpg --output ${FILE}.orig --decrypt ${FILE}
+    echo "$FILE decrypted, output file: $FILE.orig"
+  fi
+}
+
+process_text() {
+  if [ -n "$TEXT" ]; then
+    t=$(gpg --decrypt --armor "$TEXT")
+    echo "decrypted text"
+    echo ""
+    echo "$t"
+  fi
+}
+
+check_for_gpg
+check_for_gpg_key
+process_file
+process_text
