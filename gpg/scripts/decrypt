@@ -4,8 +4,6 @@ set -e
 
 POSITIONAL_ARGS=()
 
-KEYSERVER="pgp.mit.edu"
-
 while [[ $# -gt 0 ]]; do
   case $1 in
     -k|--key)
@@ -20,11 +18,6 @@ while [[ $# -gt 0 ]]; do
       ;;
     -t|--text)
       TEXT="$2"
-      shift
-      shift
-      ;;
-    -s|--keyserver)
-      KEYSERVER="$2"
       shift
       shift
       ;;
@@ -65,14 +58,14 @@ check_for_gpg() {
 check_for_gpg_key() {
   if ! gpg --list-keys "$KEY" >/dev/null 2>&1; then
     echo "Key $KEY is not installed"
-    echo "Attempting to download key from $KEYSERVER"
-    gpg --keyserver "$KEYSERVER" --recv-keys "$KEY"
+    echo "Please see: https://techdocs.fyi/gpg/"
+    exit 1
   fi
 }
 
 process_file() {
   if [ -n "$FILE" ]; then
-    gpg --output ${FILE}.orig --decrypt ${FILE}
+    gpg --output "${FILE}.orig" --decrypt "${FILE}"
     echo "$FILE decrypted, output file: $FILE.orig"
   fi
 }
